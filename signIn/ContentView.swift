@@ -24,64 +24,53 @@ import AuthenticationServices
 struct ContentView: View {
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Spacer()
+            HStack {
+                Image(systemName: "swirl.circle.righthalf.filled.inverse")
+                    .imageScale(.large)
+                    .foregroundStyle(Color.white)
+                    .font(.largeTitle)
+                    .bold()
+                Text("Power")
+                    .font(.largeTitle)
+                    .bold()
+                    .foregroundColor(.white)
+            }.padding()
+                .shadow(color: Color.black.opacity(0.8), radius: 5, x: 0, y: 2)
             
-            Button(action: { AuthService().authWithPhoneNumber(phone: "+380688880168")},
-                   label: {
-                Image(systemName: "iphone.gen1.circle")
-                    .frame(width: 40, height: 40)
-                Text("Sing in by phone")
-            }).frame(width: 200, height: 40)
-                .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                .background(Color.white)
-                .cornerRadius(8.0)
-                .shadow(radius: 4.0)
             
-            Button(action: { AuthService().signInWithGoogleSync(vc: AuthService.getRootViewController())},
-                   label: {
-                HStack{
-                    Image(systemName: "g.circle")
-                        .resizable()
-                        .frame(width: 32, height: 32)
-                        .foregroundColor(.black)
-                    Text("Sing in with Google")
-                        .bold()
-                        .foregroundColor(.black)
-                }
-            }).frame(width: 200, height: 40)
-                .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                .background(Color.white)
-                .cornerRadius(8.0)
-                .shadow(radius: 4.0)
+            VStack{
+                AuthButton(action: {
+                    //
+                }, systemImage: "at", label: "Sign in with Email")
+                
+                AuthButton(action: {
+                    AuthService().authWithPhoneNumber(phone: "+380688880168")
+                }, systemImage: "iphone.gen1.circle" , label: "Sing in by phone")
+                
+                AuthButton(action: {
+                    AuthService().signInWithGoogleSync(vc: AuthService.getRootViewController())
+                }, systemImage: "g.circle", label: "Sing in with Google")
+                
+                AuthButton(action: {
+                    AuthService().startSignInWithAppleFlow()
+                }, systemImage: "apple.logo", label: "SIGN IN WITH APPLE")
+                
+            }.padding()
             
-            Button(action: { AuthService().startSignInWithAppleFlow()},
-                   label: {
-                HStack{
-                    Image(systemName: "apple.logo")
-                        .resizable()
-                        .frame(width: 32, height: 32)
-                        .foregroundColor(.black)
-                    Text("Sing in with Apple")
-                        .bold()
-                        .foregroundColor(.black)
-                }
-            })
-            .frame(width: 200, height: 40)
-            .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-            .background(Color.white)
-            .cornerRadius(8.0)
-            .shadow(radius: 4.0)
-            
-        }
-        .onAppear {
-            //AuthService().startSignInWithAppleFlow()
-            //AuthService().authWithPhoneNumber(phone: "+380688880168")
-        }
-        .padding()
+            NavigationLink("Trouble Signing In?") {
+                
+            }.foregroundColor(.black)
+        }.navigationBarBackButtonHidden()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(LinearGradient(gradient: Gradient(colors: [.pink, .red]), startPoint: .top, endPoint: .bottom))
+            .opacity(0.9)
         /*
+         .onAppear {
+         //AuthService().startSignInWithAppleFlow()
+         //AuthService().authWithPhoneNumber(phone: "+380688880168")
+         }
+         
          .task {
          await AuthService().signInWithGoogle(vc: AuthService.getRootViewController())
          }*/
@@ -252,5 +241,32 @@ extension AuthService: ASAuthorizationControllerDelegate {
         } else {
             currentNonce = nil
         }
+    }
+}
+
+struct AuthButton: View {
+    let action: () -> Void
+    let systemImage: String
+    let label: String
+    
+    var body: some View {
+        Button(action: action) {
+            HStack() {
+                //Spacer()
+                Image(systemName: systemImage)
+                    .resizable()
+                    .frame(width: 32, height: 32)
+                    .foregroundColor(.white)
+                Text(label)
+                    .bold()
+                    .foregroundColor(.white)
+                //Spacer()
+            }.frame(alignment: .leading)
+        }
+        .frame(width: 210, height: 36)
+        .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+        .background(Capsule().stroke(Color.white, lineWidth: 1))
+        .shadow(radius: 8.0)
+        
     }
 }

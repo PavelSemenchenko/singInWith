@@ -8,10 +8,22 @@
 import SwiftUI
 
 struct SplashScreen: View {
+    @State private var isActive = false
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Image(systemName: "power").font(.largeTitle).bold()
+            Text("Wellcome to Power").font(.largeTitle).bold()
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                isActive = true
+            }
+        }
+        .background(NavigationLink("", destination: ContentView(), isActive: $isActive).isDetailLink(false))
     }
 }
+
 
 #Preview {
     SplashScreen()
