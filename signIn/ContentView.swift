@@ -22,6 +22,8 @@ import AuthenticationServices
 // sertifacation- keys- turn Aple push notification + sign in with apple
 
 struct ContentView: View {
+    @EnvironmentObject private var navigationVM: NavigationRouter
+    
     var body: some View {
         VStack {
             Spacer()
@@ -38,10 +40,12 @@ struct ContentView: View {
             }.padding()
                 .shadow(color: Color.black.opacity(0.8), radius: 5, x: 0, y: 2)
             
-            
+            Divider()
+                .background(Color.black) // Устанавливаем черный цвет для Divider
+                .frame(height: 2) // Устанавливаем толщину Divider
             VStack{
                 AuthButton(action: {
-                    //
+                    navigationVM.pushScreen(route: .signWithEmail)
                 }, systemImage: "at", label: "Sign in with Email")
                 
                 AuthButton(action: {

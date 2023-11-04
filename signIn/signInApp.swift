@@ -50,12 +50,28 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct YourApp: App {
   // register app delegate for Firebase setup
   @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    // navigation
+    @ObservedObject var navigationVM = NavigationRouter()
 
   var body: some Scene {
     WindowGroup {
-      NavigationView {
-        SplashScreen()
-      }
+        
+        NavigationStack(path: $navigationVM.currentRoute) {
+            SplashScreen()
+                .navigationDestination(for: NavigationRoute.self) { route in
+                    switch route {
+                    case .splash:
+                        SplashScreen()
+                    case .signIn:
+                        ContentView()
+                    case .home:
+                        HomeScreen()
+                    case .signWithEmail:
+                        SingInWithEmailScreen()
+                    }
+                }
+        }.environmentObject(navigationVM)
+        
     }
   }
 }

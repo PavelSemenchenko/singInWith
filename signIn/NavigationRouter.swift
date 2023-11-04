@@ -5,14 +5,32 @@
 //  Created by Pavel Semenchenko on 04.11.2023.
 //
 
+import Foundation
 import SwiftUI
 
-struct NavigationRouter: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+enum NavigationRoute: Hashable {
+    case splash
+    case signIn
+    case home
+    case signWithEmail
+    //case editTodo(todo: Todo )
 }
 
-#Preview {
-    NavigationRouter()
+class NavigationRouter: ObservableObject {
+    @Published var currentRoute: NavigationPath = NavigationPath()
+    
+    func pushScreen(route: NavigationRoute) {
+        currentRoute.append(route)
+    }
+    func pushHome() {
+        currentRoute.removeLast(currentRoute.count)
+        pushScreen(route: .home)
+    }
+    func popScreen() {
+        currentRoute.removeLast()
+    }
+    func popUntilSignInScreen() {
+        currentRoute.removeLast(currentRoute.count)
+        pushScreen(route: .signIn)
+    }
 }

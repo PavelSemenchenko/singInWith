@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A42FE622AF6E8D5001EE869 /* SingInWithEmailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A42FE612AF6E8D5001EE869 /* SingInWithEmailScreen.swift */; };
 		2A6611B52AF41BAB00BAF5E5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2A6611B42AF41BAB00BAF5E5 /* GoogleService-Info.plist */; };
 		2AA573D02AF54E9500B07C88 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 2AA573CF2AF54E9500B07C88 /* GoogleSignIn */; };
 		2AA573D22AF54E9500B07C88 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2AA573D12AF54E9500B07C88 /* GoogleSignInSwift */; };
@@ -16,6 +17,7 @@
 		2AB616ED2AF1A4800086143D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2AB616EC2AF1A4800086143D /* Preview Assets.xcassets */; };
 		2AD087682AF56B6B006E6755 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD087672AF56B6B006E6755 /* HomeScreen.swift */; };
 		2AD0876A2AF57911006E6755 /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD087692AF57911006E6755 /* SplashScreen.swift */; };
+		2AE89C722AF6E5F10091F642 /* NavigationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AE89C712AF6E5F10091F642 /* NavigationRouter.swift */; };
 		2AF04C352AF2C9F5006E6E58 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2AF04C342AF2C9F5006E6E58 /* FirebaseAnalytics */; };
 		2AF04C372AF2C9F5006E6E58 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 2AF04C362AF2C9F5006E6E58 /* FirebaseAnalyticsOnDeviceConversion */; };
 		2AF04C392AF2C9F5006E6E58 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2AF04C382AF2C9F5006E6E58 /* FirebaseAnalyticsSwift */; };
@@ -51,6 +53,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2A42FE612AF6E8D5001EE869 /* SingInWithEmailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingInWithEmailScreen.swift; sourceTree = "<group>"; };
 		2A6611B42AF41BAB00BAF5E5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2AB616E22AF1A47F0086143D /* signIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = signIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AB616E52AF1A47F0086143D /* signInApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = signInApp.swift; sourceTree = "<group>"; };
@@ -59,6 +62,7 @@
 		2AB616EC2AF1A4800086143D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2AD087672AF56B6B006E6755 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		2AD087692AF57911006E6755 /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
+		2AE89C712AF6E5F10091F642 /* NavigationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRouter.swift; sourceTree = "<group>"; };
 		2AF04C762AF2D2CB006E6E58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -129,8 +133,10 @@
 				2AF04C762AF2D2CB006E6E58 /* Info.plist */,
 				2AB616E52AF1A47F0086143D /* signInApp.swift */,
 				2AB616E72AF1A47F0086143D /* ContentView.swift */,
+				2A42FE612AF6E8D5001EE869 /* SingInWithEmailScreen.swift */,
 				2AD087692AF57911006E6755 /* SplashScreen.swift */,
 				2AD087672AF56B6B006E6755 /* HomeScreen.swift */,
+				2AE89C712AF6E5F10091F642 /* NavigationRouter.swift */,
 				2A6611B42AF41BAB00BAF5E5 /* GoogleService-Info.plist */,
 				2AB616E92AF1A4800086143D /* Assets.xcassets */,
 				2AB616EB2AF1A4800086143D /* Preview Content */,
@@ -259,7 +265,9 @@
 			files = (
 				2AD0876A2AF57911006E6755 /* SplashScreen.swift in Sources */,
 				2AB616E82AF1A47F0086143D /* ContentView.swift in Sources */,
+				2A42FE622AF6E8D5001EE869 /* SingInWithEmailScreen.swift in Sources */,
 				2AB616E62AF1A47F0086143D /* signInApp.swift in Sources */,
+				2AE89C722AF6E5F10091F642 /* NavigationRouter.swift in Sources */,
 				2AD087682AF56B6B006E6755 /* HomeScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
