@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import FirebaseAuth
+import FirebaseAuthCombineSwift
 
 
 struct SingInWithEmailScreen: View {
-    @State private var email = ""
-    @State private var password = ""
+    @FocusState private var email
+    @FocusState private var password
     @EnvironmentObject private var navigationVM: NavigationRouter
+    @EnvironmentObject private var loginVM : SingInWithEmailScreenVM
     
     var body: some View {
         NavigationView {
@@ -21,15 +24,19 @@ struct SingInWithEmailScreen: View {
                     .frame(width: 100, height: 100)
                     .padding()
                 
-                TextField("Email", text: $email)
+                TextField("Email", text: $loginVM.email)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
                 
-                SecureField("Пароль", text: $password)
+                SecureField("Пароль", text: $loginVM.password)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
                 
                 Button(action: {
+                    Task {
+                        await loginVM.signIn()
+                        navigationVM.pushScreen(route: .home)
+                    }
                     // Выполните здесь вход с использованием email и пароля
                     // Вы можете добавить свою логику аутентификации в это действие
                     // В этом примере мы просто выведем в консоль email и пароль.
@@ -80,6 +87,59 @@ struct ResetPasswordScreen: View {
         .navigationBarTitle("Сброс пароля")
     }
 }
+
+class SingInWithEmailScreenVM: ObservableObject {
+    @Published var email : String = "test@test.com"
+    @Published var password: String = "qwerty"
+    @Published var busy: Bool = false
+    
+    
+    var isEmailCorrect: Bool {
+        email.contains("@")
+    }
+    
+    var isPaswordCorrect: Bool {
+        get {
+            return password.count >= 6
+        }
+    }
+    
+    var canLogin: Bool {
+        return isEmailCorrect && isPaswordCorrect
+    }
+    
+    class var isAuthenticated: Bool {
+        print(Auth.auth().currentUser?.uid)
+        return Auth.auth().currentUser != nil
+    }
+    
+    @MainActor func logOut() {
+        try? Auth.auth().signOut()
+    }
+    
+    @MainActor func signIn() async {
+        busy = true
+        do {
+            let result = try? await Auth.auth().signIn(withEmail: email, password: password)
+//            open home
+        } catch {
+            
+        }
+        busy = false
+    }
+    @MainActor func signUp() async {
+        busy = true
+        do {
+            let result = try? await Auth.auth().createUser(withEmail: email, password: password)
+//            open home
+        } catch {
+            
+        }
+        busy = false
+    }
+}
+
+
 #Preview {
     SingInWithEmailScreen()
 }

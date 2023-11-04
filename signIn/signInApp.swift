@@ -68,6 +68,7 @@ struct YourApp: App {
                         HomeScreen()
                     case .signWithEmail:
                         SingInWithEmailScreen()
+                            .environmentObject(SingInWithEmailScreenVM())
                     }
                 }
         }.environmentObject(navigationVM)
