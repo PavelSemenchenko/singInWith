@@ -23,6 +23,7 @@ import AuthenticationServices
 
 struct ContentView: View {
     @EnvironmentObject private var navigationVM: NavigationRouter
+    @State private var isPhoneAuthSheetPresented = false
     
     var body: some View {
         VStack {
@@ -49,7 +50,8 @@ struct ContentView: View {
                 }, systemImage: "at", label: "Sign in with Email")
                 
                 AuthButton(action: {
-                    AuthService().authWithPhoneNumber(phone: "+380688880168")
+                    isPhoneAuthSheetPresented = true
+                    // AuthService().authWithPhoneNumber(phone: "+380688880168")
                 }, systemImage: "iphone.gen1.circle" , label: "Sing in by phone")
                 
                 AuthButton(action: {
@@ -61,6 +63,10 @@ struct ContentView: View {
                 }, systemImage: "apple.logo", label: "SIGN IN WITH APPLE")
                 
             }.padding()
+                .sheet(isPresented: $isPhoneAuthSheetPresented) {
+                    // Всплывающее окно для входа по телефону
+                    PhoneAuthView(isPresented: $isPhoneAuthSheetPresented)
+                }
             
             NavigationLink("Trouble Signing In?") {
                 
@@ -80,6 +86,50 @@ struct ContentView: View {
          }*/
     }
 }
+struct PhoneAuthView: View {
+    @Binding var isPresented: Bool
+    @State private var phoneNumber = "+380688880168"
+    @State private var verificationCode = "123456"
+    @State private var verificationID: String?
+    
+    var body: some View {
+        NavigationView {
+            VStack {
+                // Добавьте поля для ввода номера телефона и проверочного кода
+                TextField("Phone Number", text: $phoneNumber)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                Button(action: {
+                    AuthService().authWithPhoneNumber(phone: "+380688880168")
+                }) {
+                    Text("Get Verification Code")
+                }
+                .padding()
+                
+                TextField("Verification Code", text: $verificationCode)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                
+                Button(action: {
+                    AuthService().signInWithPhone(verificationID: verificationID!, verificationCode: verificationCode)
+                }) {
+                    Text("Authenticate")
+                }
+                .padding()
+                
+                // Добавьте кнопку для закрытия всплывающего окна
+                Button(action: {
+                    isPresented = false
+                }) {
+                    Text("Cancel")
+                }
+            }
+            .padding()
+            .navigationTitle("Phone Authentication")
+        }
+    }
+}
+
 
 #Preview {
     ContentView()
@@ -91,8 +141,10 @@ class AuthService: NSObject {
     
     // phone
     func authWithPhoneNumber(phone: String = "+380688880168") {
+        // сделав запрос
         PhoneAuthProvider.provider()
             .verifyPhoneNumber(phone, uiDelegate: nil) { verificationID, error in
+                // получили
                 print(verificationID)
                 print(error)
                 
@@ -112,34 +164,34 @@ class AuthService: NSObject {
             withVerificationID: verificationID,
             verificationCode: verificationCode
         )
-        
+        // вход в файрбейс по креденшл собраного из телефона и пароля
         Auth.auth().signIn(with: credential) { result, error in
             if let user = result?.user {
-                        print("User UID: \(user.uid)")
-                        
-                        // Проверяем, новый ли пользователь (isNewUser), и определяем, куда перейти
-                        if result?.additionalUserInfo?.isNewUser == true {
-                            self.navigationVM.pushScreen(route: .signWithEmail)
-                        } else {
-                            self.navigationVM.pushScreen(route: .home)
-                        }
-                    } else {
-                        if let error = error {
-                            // Обработка ошибки авторизации
-                            print("Error: \(error.localizedDescription)")
-                        }
-                    }
-            /*
-            print(result?.user.uid)
-            print(result?.additionalUserInfo?.isNewUser)
-            let userId = result?.user.uid
-            let isNewUser = result?.additionalUserInfo?.isNewUser
-            
-            if isNewUser == false {
-                self.navigationVM.pushScreen(route: .home)
+                print("User UID: \(user.uid)")
+                
+                // Проверяем, новый ли пользователь (isNewUser), и определяем, куда перейти
+                if result?.additionalUserInfo?.isNewUser == true {
+                    self.navigationVM.pushScreen(route: .signWithEmail)
+                } else {
+                    self.navigationVM.pushScreen(route: .home)
+                }
             } else {
-                self.navigationVM.pushScreen(route: .signWithEmail)
-            }*/
+                if let error = error {
+                    // Обработка ошибки авторизации
+                    print("Error: \(error.localizedDescription)")
+                }
+            }
+            /*
+             print(result?.user.uid)
+             print(result?.additionalUserInfo?.isNewUser)
+             let userId = result?.user.uid
+             let isNewUser = result?.additionalUserInfo?.isNewUser
+             
+             if isNewUser == false {
+             self.navigationVM.pushScreen(route: .home)
+             } else {
+             self.navigationVM.pushScreen(route: .signWithEmail)
+             }*/
         }
     }
     
