@@ -18,7 +18,7 @@ enum NavigationRoute: Hashable {
 
 class NavigationRouter: ObservableObject {
     @Published var currentRoute: NavigationPath = NavigationPath()
-    
+        
     func pushScreen(route: NavigationRoute) {
         currentRoute.append(route)
     }

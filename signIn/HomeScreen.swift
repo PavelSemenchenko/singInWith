@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HomeScreen: View {
+    @EnvironmentObject private var navigationVM: NavigationRouter
+    
     var body: some View {
         Text("Hello, This is home page")
             .font(.largeTitle)

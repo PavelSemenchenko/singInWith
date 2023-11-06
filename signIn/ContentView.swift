@@ -39,7 +39,7 @@ struct ContentView: View {
                     .foregroundColor(.white)
             }.padding()
                 .shadow(color: Color.black.opacity(0.8), radius: 5, x: 0, y: 2)
-            
+            Spacer()
             Divider()
                 .background(Color.black) // Устанавливаем черный цвет для Divider
                 .frame(height: 2) // Устанавливаем толщину Divider
@@ -86,6 +86,7 @@ struct ContentView: View {
 }
 
 class AuthService: NSObject {
+    @EnvironmentObject private var navigationVM: NavigationRouter
     fileprivate var currentNonce: String? // for apple auth
     
     // phone
@@ -113,8 +114,32 @@ class AuthService: NSObject {
         )
         
         Auth.auth().signIn(with: credential) { result, error in
+            if let user = result?.user {
+                        print("User UID: \(user.uid)")
+                        
+                        // Проверяем, новый ли пользователь (isNewUser), и определяем, куда перейти
+                        if result?.additionalUserInfo?.isNewUser == true {
+                            self.navigationVM.pushScreen(route: .signWithEmail)
+                        } else {
+                            self.navigationVM.pushScreen(route: .home)
+                        }
+                    } else {
+                        if let error = error {
+                            // Обработка ошибки авторизации
+                            print("Error: \(error.localizedDescription)")
+                        }
+                    }
+            /*
             print(result?.user.uid)
             print(result?.additionalUserInfo?.isNewUser)
+            let userId = result?.user.uid
+            let isNewUser = result?.additionalUserInfo?.isNewUser
+            
+            if isNewUser == false {
+                self.navigationVM.pushScreen(route: .home)
+            } else {
+                self.navigationVM.pushScreen(route: .signWithEmail)
+            }*/
         }
     }
     
