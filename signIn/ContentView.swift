@@ -87,6 +87,7 @@ struct ContentView: View {
     }
 }
 struct PhoneAuthView: View {
+    @EnvironmentObject private var navigationVM: NavigationRouter
     @Binding var isPresented: Bool
     @State private var phoneNumber = "+380688880168"
     @State private var verificationCode = "123456"
@@ -99,21 +100,38 @@ struct PhoneAuthView: View {
                 TextField("Phone Number", text: $phoneNumber)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
-                Button(action: {
-                    AuthService().authWithPhoneNumber(phone: "+380688880168")
-                }) {
-                    Text("Get Verification Code")
+                                
+                if verificationID != nil {
+                    TextField("Verification Code", text: $verificationCode)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
                 }
-                .padding()
-                
-                TextField("Verification Code", text: $verificationCode)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
                 
                 Button(action: {
-                    AuthService().signInWithPhone(verificationID: verificationID!, verificationCode: verificationCode)
+                    let service = AuthService()
+                    
+                    guard let verificationID = verificationID else {
+                        Task {
+                            let newId = await service.getVerificationId(phone: phoneNumber)
+                            verificationID = newId
+                        }
+                        return
+                    }
+                    Task {
+                        let status = await service.signInWithPhone(verificationID: verificationID, verificationCode: verificationCode)
+                        switch (status) {
+                            
+                        case .newUser:
+                            self.navigationVM.pushScreen(route: .signWithEmail)
+                        case .signIn:
+                            self.navigationVM.pushScreen(route: .home)
+                        case .failed:
+                            self.verificationID = nil
+                            self.verificationCode = ""
+                        }
+                    }
                 }) {
-                    Text("Authenticate")
+                    Text(verificationID == nil ? "Send Code" : "Authenticate")
                 }
                 .padding()
                 
@@ -135,63 +153,43 @@ struct PhoneAuthView: View {
     ContentView()
 }
 
+enum AuthStatus {
+    case newUser
+    case signIn
+    case failed
+}
+
 class AuthService: NSObject {
-    @EnvironmentObject private var navigationVM: NavigationRouter
+    //@EnvironmentObject private var navigationVM: NavigationRouter
     fileprivate var currentNonce: String? // for apple auth
     
     // phone
-    func authWithPhoneNumber(phone: String = "+380688880168") {
-        // сделав запрос
-        PhoneAuthProvider.provider()
-            .verifyPhoneNumber(phone, uiDelegate: nil) { verificationID, error in
-                // получили
-                print(verificationID)
-                print(error)
-                
-                guard let verificationID = verificationID else {
-                    // show error to user
-                    return
-                }
-                // next screen
-                self.signInWithPhone(verificationID: verificationID, verificationCode: "123456")
-                
-            }
-        // ContentView(verificationID: verificationID) - переход на второй экран
+    func getVerificationId(phone: String = "+380688880168") async -> String? {
+        do {
+            let verificationID = try? await PhoneAuthProvider.provider()
+                .verifyPhoneNumber(phone, uiDelegate: nil)
+            return verificationID
+        } catch {
+            print("\(#file) \(#function) \(error)")
+        }
+        return nil
     }
     
-    func signInWithPhone(verificationID: String, verificationCode: String) {
+    func signInWithPhone(verificationID: String, verificationCode: String) async -> AuthStatus {
         let credential = PhoneAuthProvider.provider().credential(
             withVerificationID: verificationID,
             verificationCode: verificationCode
         )
-        // вход в файрбейс по креденшл собраного из телефона и пароля
-        Auth.auth().signIn(with: credential) { result, error in
-            if let user = result?.user {
-                print("User UID: \(user.uid)")
-                
-                // Проверяем, новый ли пользователь (isNewUser), и определяем, куда перейти
-                if result?.additionalUserInfo?.isNewUser == true {
-                    self.navigationVM.pushScreen(route: .signWithEmail)
-                } else {
-                    self.navigationVM.pushScreen(route: .home)
-                }
-            } else {
-                if let error = error {
-                    // Обработка ошибки авторизации
-                    print("Error: \(error.localizedDescription)")
-                }
-            }
-            /*
-             print(result?.user.uid)
-             print(result?.additionalUserInfo?.isNewUser)
-             let userId = result?.user.uid
-             let isNewUser = result?.additionalUserInfo?.isNewUser
-             
-             if isNewUser == false {
-             self.navigationVM.pushScreen(route: .home)
-             } else {
-             self.navigationVM.pushScreen(route: .signWithEmail)
-             }*/
+        
+        do {
+            let result = try await Auth.auth().signIn(with: credential)
+            if result.additionalUserInfo?.isNewUser == true {
+                return .newUser
+            } 
+            return .signIn
+        } catch {
+            print("\(#file) \(#function) \(error)")
+            return .failed
         }
     }
     

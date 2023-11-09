@@ -16,7 +16,7 @@ struct SplashScreen: View {
             Text("Wellcome to Power").font(.largeTitle).bold()
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
                 isActive = true
             }
         }

@@ -63,7 +63,7 @@ struct YourApp: App {
                     case .splash:
                         SplashScreen()
                     case .signIn:
-                        ContentView()
+                        ContentView().environmentObject(navigationVM)
                     case .home:
                         HomeScreen()
                     case .signWithEmail:
