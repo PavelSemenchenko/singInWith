@@ -98,7 +98,7 @@ struct PhoneAuthView: View {
                 TextField("Phone Number", text: $phoneNumber)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
-                                
+                
                 if verificationID != nil {
                     TextField("Verification Code", text: $verificationCode)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -171,6 +171,20 @@ class AuthService: NSObject {
     @EnvironmentObject private var navigationVM: NavigationRouter
     fileprivate var currentNonce: String? // for apple auth
     
+    class var isAuthenticated: Bool {
+        print(Auth.auth().currentUser?.uid)
+        return Auth.auth().currentUser != nil
+    }
+    class func signOut() {
+            do {
+                try Auth.auth().signOut() // Выход из обычной аутентификации Firebase
+                GIDSignIn.sharedInstance.signOut() // Выход из Google
+               // ASAuthorizationAppleIDProvider().createRequest().cancel() // Отмена Apple авторизации
+            } catch {
+                print("Error signing out: \(error.localizedDescription)")
+            }
+        }
+    
     // phone
     func getVerificationId(phone: String ) async -> String? {
         do {
@@ -193,7 +207,7 @@ class AuthService: NSObject {
             let result = try await Auth.auth().signIn(with: credential)
             if result.additionalUserInfo?.isNewUser == true {
                 return .newUser
-            } 
+            }
             return .signIn
         } catch {
             print("\(#file) \(#function) \(error)")
@@ -203,24 +217,27 @@ class AuthService: NSObject {
     
     // google
     func signInWithGoogle(vc: UIViewController) async -> AuthStatus {
+        // google sign in
         guard let clientID = FirebaseApp.app()?.options.clientID else { return .failed}
         
+        // Create Google Sign In configuration object.
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
         
         do {
-        let result = try? await GIDSignIn.sharedInstance.signIn(withPresenting: vc)
-        
-        guard let result = result else {
-            return .failed
-        }
-        
-        let credential = GoogleAuthProvider.credential(
-            withIDToken: result.user.idToken!.tokenString,
-            accessToken: result.user.accessToken.tokenString)
-        
+            let result = try? await GIDSignIn.sharedInstance.signIn(withPresenting: vc)
+            // получили результат гугл авторизации
+            
+            guard let result = result else {
+                return .failed
+            }
+            // авторизация в файрбейс
+            let credential = GoogleAuthProvider.credential(
+                withIDToken: result.user.idToken!.tokenString,
+                accessToken: result.user.accessToken.tokenString)
+            
             let authResult = try await Auth.auth().signIn(with: credential)
-        
+            
             return authResult.additionalUserInfo?.isNewUser == true ? .newUser : .signIn
             print("===== User id is : \(authResult.user.uid)")
             print(authResult.additionalUserInfo?.isNewUser)
@@ -230,15 +247,16 @@ class AuthService: NSObject {
         
         
     }
-   
+    
     func signInWithGoogleSync(vc: UIViewController) {
         Task {
             let status = await AuthService().signInWithGoogle(vc: vc)
-
+            
             switch status {
             case .newUser:
                 self.navigationVM.pushScreen(route: .signUp)
             case .signIn:
+                print("======== status currently is : \(status.self)")
                 self.navigationVM.pushScreen(route: .home)
             case .failed:
                 // Обработка ошибки
@@ -246,7 +264,7 @@ class AuthService: NSObject {
             }
         }
     }
-
+    
     
     class func getRootViewController() -> UIViewController {
         guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {

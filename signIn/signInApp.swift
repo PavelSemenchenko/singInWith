@@ -56,29 +56,31 @@ struct YourApp: App {
 
   var body: some Scene {
     WindowGroup {
-        
-        NavigationStack(path: $navigationVM.currentRoute) {
-            SplashScreen()
-                .navigationDestination(for: NavigationRoute.self) { route in
-                    switch route {
-                    case .splash:
-                        SplashScreen()
-                    case .signIn:
-                        ContentView()
-                            .environmentObject(navigationVM)
-                    case .home:
-                        HomeScreen()
-                            .environmentObject(navigationVM)
-                    case .signWithEmail:
-                        SingInWithEmailScreen()
-                            .environmentObject(SingInWithEmailScreenVM())
-                    case .signUp:
-                        SignUpScreen()
-                            .environmentObject(navigationVM)
+        if AuthService.isAuthenticated {
+            HomeScreen().environmentObject(navigationVM)
+        } else {
+            NavigationStack(path: $navigationVM.currentRoute) {
+                SplashScreen()
+                    .navigationDestination(for: NavigationRoute.self) { route in
+                        switch route {
+                        case .splash:
+                            SplashScreen()
+                        case .signIn:
+                            ContentView()
+                                .environmentObject(navigationVM)
+                        case .home:
+                            HomeScreen()
+                                .environmentObject(navigationVM)
+                        case .signWithEmail:
+                            SingInWithEmailScreen()
+                                .environmentObject(SingInWithEmailScreenVM())
+                        case .signUp:
+                            SignUpScreen()
+                                .environmentObject(navigationVM)
+                        }
                     }
-                }
-        }.environmentObject(navigationVM)
-        
+            }.environmentObject(navigationVM)
+        }
     }
   }
 }

@@ -14,6 +14,12 @@ struct HomeScreen: View {
         Text("Hello, This is home page")
             .font(.largeTitle)
             .fontWeight(.bold)
+        Button(action: {
+            AuthService.signOut()
+            navigationVM.pushScreen(route: .signIn)
+        }) {
+            Text("Sign Out")
+        }
     }
 }
 
