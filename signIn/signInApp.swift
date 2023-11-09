@@ -57,7 +57,8 @@ struct YourApp: App {
   var body: some Scene {
     WindowGroup {
         if AuthService.isAuthenticated {
-            HomeScreen().environmentObject(navigationVM)
+            HomeScreen()
+                .environmentObject(navigationVM)
         } else {
             NavigationStack(path: $navigationVM.currentRoute) {
                 SplashScreen()

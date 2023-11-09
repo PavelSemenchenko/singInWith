@@ -252,7 +252,7 @@ class AuthService: NSObject {
         Task {
             let status = await AuthService().signInWithGoogle(vc: vc)
             
-            switch status {
+            switch (status) {
             case .newUser:
                 self.navigationVM.pushScreen(route: .signUp)
             case .signIn:
