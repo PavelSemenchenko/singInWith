@@ -11,6 +11,7 @@ import SwiftUI
 enum NavigationRoute: Hashable {
     case splash
     case signIn
+    case signUp
     case home
     case signWithEmail
     //case editTodo(todo: Todo )

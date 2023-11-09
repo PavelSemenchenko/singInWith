@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 import FirebaseCore
 import FirebaseAuth
 import GoogleSignIn
@@ -63,12 +64,17 @@ struct YourApp: App {
                     case .splash:
                         SplashScreen()
                     case .signIn:
-                        ContentView().environmentObject(navigationVM)
+                        ContentView()
+                            .environmentObject(navigationVM)
                     case .home:
                         HomeScreen()
+                            .environmentObject(navigationVM)
                     case .signWithEmail:
                         SingInWithEmailScreen()
                             .environmentObject(SingInWithEmailScreenVM())
+                    case .signUp:
+                        SignUpScreen()
+                            .environmentObject(navigationVM)
                     }
                 }
         }.environmentObject(navigationVM)

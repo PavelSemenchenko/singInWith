@@ -49,11 +49,13 @@ struct ContentView: View {
                     navigationVM.pushScreen(route: .signWithEmail)
                 }, systemImage: "at", label: "Sign in with Email")
                 
+                // sign in with phone
                 AuthButton(action: {
                     isPhoneAuthSheetPresented = true
                     // AuthService().authWithPhoneNumber(phone: "+380688880168")
                 }, systemImage: "iphone.gen1.circle" , label: "Sing in by phone")
                 
+                // sign in with google
                 AuthButton(action: {
                     AuthService().signInWithGoogleSync(vc: AuthService.getRootViewController())
                 }, systemImage: "g.circle", label: "Sing in with Google")
@@ -75,15 +77,6 @@ struct ContentView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(LinearGradient(gradient: Gradient(colors: [.pink, .red]), startPoint: .top, endPoint: .bottom))
             .opacity(0.9)
-        /*
-         .onAppear {
-         //AuthService().startSignInWithAppleFlow()
-         //AuthService().authWithPhoneNumber(phone: "+380688880168")
-         }
-         
-         .task {
-         await AuthService().signInWithGoogle(vc: AuthService.getRootViewController())
-         }*/
     }
 }
 struct PhoneAuthView: View {
@@ -92,11 +85,16 @@ struct PhoneAuthView: View {
     @State private var phoneNumber = "+380688880168"
     @State private var verificationCode = "123456"
     @State private var verificationID: String?
+    @State private var errorText: String?
     
     var body: some View {
         NavigationView {
             VStack {
-                // Добавьте поля для ввода номера телефона и проверочного кода
+                if let errorText = errorText {
+                    Text(errorText)
+                        .foregroundColor(.red)
+                        .padding()
+                }
                 TextField("Phone Number", text: $phoneNumber)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
@@ -113,6 +111,12 @@ struct PhoneAuthView: View {
                     guard let verificationID = verificationID else {
                         Task {
                             let newId = await service.getVerificationId(phone: phoneNumber)
+                            if newId == nil {
+                                errorText = "Please, ensure you hsve enter correct number, include country code!"
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                                    errorText = nil
+                                }
+                            }
                             verificationID = newId
                         }
                         return
@@ -122,10 +126,14 @@ struct PhoneAuthView: View {
                         switch (status) {
                             
                         case .newUser:
-                            self.navigationVM.pushScreen(route: .signWithEmail)
+                            self.navigationVM.pushScreen(route: .signUp)
                         case .signIn:
                             self.navigationVM.pushScreen(route: .home)
                         case .failed:
+                            errorText = "Oops, something went wrong. Pleasy, try again later"
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                                errorText = nil
+                            }
                             self.verificationID = nil
                             self.verificationCode = ""
                         }
@@ -160,15 +168,16 @@ enum AuthStatus {
 }
 
 class AuthService: NSObject {
-    //@EnvironmentObject private var navigationVM: NavigationRouter
+    @EnvironmentObject private var navigationVM: NavigationRouter
     fileprivate var currentNonce: String? // for apple auth
     
     // phone
-    func getVerificationId(phone: String = "+380688880168") async -> String? {
+    func getVerificationId(phone: String ) async -> String? {
         do {
             let verificationID = try? await PhoneAuthProvider.provider()
                 .verifyPhoneNumber(phone, uiDelegate: nil)
             return verificationID
+            // получили верификационный ид
         } catch {
             print("\(#file) \(#function) \(error)")
         }
@@ -180,7 +189,6 @@ class AuthService: NSObject {
             withVerificationID: verificationID,
             verificationCode: verificationCode
         )
-        
         do {
             let result = try await Auth.auth().signIn(with: credential)
             if result.additionalUserInfo?.isNewUser == true {
@@ -194,34 +202,51 @@ class AuthService: NSObject {
     }
     
     // google
-    func signInWithGoogle(vc: UIViewController) async {
-        guard let clientID = FirebaseApp.app()?.options.clientID else {return }
+    func signInWithGoogle(vc: UIViewController) async -> AuthStatus {
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return .failed}
         
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
         
+        do {
         let result = try? await GIDSignIn.sharedInstance.signIn(withPresenting: vc)
         
         guard let result = result else {
-            return
+            return .failed
         }
         
         let credential = GoogleAuthProvider.credential(
             withIDToken: result.user.idToken!.tokenString,
             accessToken: result.user.accessToken.tokenString)
         
-        let result1 = try? await Auth.auth().signIn(with: credential)
+            let authResult = try await Auth.auth().signIn(with: credential)
         
-        print(result1?.user.uid)
-        print(result1?.additionalUserInfo?.isNewUser)
+            return authResult.additionalUserInfo?.isNewUser == true ? .newUser : .signIn
+            print("===== User id is : \(authResult.user.uid)")
+            print(authResult.additionalUserInfo?.isNewUser)
+        } catch {
+            return .failed
+        }
+        
         
     }
-    
+   
     func signInWithGoogleSync(vc: UIViewController) {
         Task {
-            await self.signInWithGoogle(vc: vc)
+            let status = await AuthService().signInWithGoogle(vc: vc)
+
+            switch status {
+            case .newUser:
+                self.navigationVM.pushScreen(route: .signUp)
+            case .signIn:
+                self.navigationVM.pushScreen(route: .home)
+            case .failed:
+                // Обработка ошибки
+                print("Google Sign In Failed")
+            }
         }
     }
+
     
     class func getRootViewController() -> UIViewController {
         guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
@@ -232,6 +257,8 @@ class AuthService: NSObject {
         }
         return root
     }
+    
+    
     // apple
     @available(iOS 13, *)
     func startSignInWithAppleFlow() {
