@@ -24,6 +24,8 @@ import AuthenticationServices
 struct ContentView: View {
     @EnvironmentObject private var navigationVM: NavigationRouter
     @State private var isPhoneAuthSheetPresented = false
+    //@State private var userLoggedIn = (Auth.auth().currentUser != nil)
+    @State private var err : String = ""
     
     var body: some View {
         VStack {
@@ -63,6 +65,15 @@ struct ContentView: View {
                 AuthButton(action: {
                     AuthService().startSignInWithAppleFlow()
                 }, systemImage: "apple.logo", label: "SIGN IN WITH APPLE")
+                AuthButton(action: {
+                    Task {
+                        do {
+                            try await AuthenticationWithGoogle().googleOauth()
+                        } catch let e {
+                            err = e.localizedDescription
+                        }
+                    }
+                }, systemImage: "person.2.badge.key", label: "google")
                 
             }.padding()
                 .sheet(isPresented: $isPhoneAuthSheetPresented) {
@@ -166,24 +177,66 @@ enum AuthStatus {
     case signIn
     case failed
 }
+struct AuthenticationWithGoogle {
+    func googleOauth() async throws {
+        // google sign in
+        guard let clientID = FirebaseApp.app()?.options.clientID else {
+            fatalError("no firbase clientID found")
+        }
+
+        // Create Google Sign In configuration object.
+        let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
+        
+        //get rootView
+        let scene = await UIApplication.shared.connectedScenes.first as? UIWindowScene
+        guard let rootViewController = await scene?.windows.first?.rootViewController
+        else {
+            fatalError("There is no root view controller!")
+        }
+        
+        //google sign in authentication response
+        let result = try await GIDSignIn.sharedInstance.signIn(
+            withPresenting: rootViewController
+        )
+        let user = result.user
+        guard let idToken = user.idToken?.tokenString else {
+            throw "Unexpected error occurred, please retry"
+        }
+        
+        //Firebase auth
+        let credential = GoogleAuthProvider.credential(
+            withIDToken: idToken, accessToken: user.accessToken.tokenString
+        )
+        try await Auth.auth().signIn(with: credential)
+    }
+    
+    func logout() async throws {
+        GIDSignIn.sharedInstance.signOut()
+        try Auth.auth().signOut()
+    }
+}
+
+
+extension String: Error {}
 
 class AuthService: NSObject {
     @EnvironmentObject private var navigationVM: NavigationRouter
     fileprivate var currentNonce: String? // for apple auth
     
     class var isAuthenticated: Bool {
-        print(Auth.auth().currentUser?.uid)
+        print(Auth.auth().currentUser?.uid ?? "Unknown")
         return Auth.auth().currentUser != nil
     }
     class func signOut() {
-            do {
-                try Auth.auth().signOut() // Выход из обычной аутентификации Firebase
-                GIDSignIn.sharedInstance.signOut() // Выход из Google
-               // ASAuthorizationAppleIDProvider().createRequest().cancel() // Отмена Apple авторизации
-            } catch {
-                print("Error signing out: \(error.localizedDescription)")
-            }
+        do {
+            try Auth.auth().signOut() // Выход из обычной аутентификации Firebase
+            GIDSignIn.sharedInstance.signOut() // Выход из Google
+            // ASAuthorizationAppleIDProvider().createRequest().cancel() // Отмена Apple авторизации
+        } catch {
+            print("Error signing out: \(error.localizedDescription)")
         }
+    }
     
     // phone
     func getVerificationId(phone: String ) async -> String? {
@@ -225,12 +278,17 @@ class AuthService: NSObject {
         GIDSignIn.sharedInstance.configuration = config
         
         do {
-            let result = try? await GIDSignIn.sharedInstance.signIn(withPresenting: vc)
+            let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: vc)
             // получили результат гугл авторизации
             
-            guard let result = result else {
-                return .failed
+            let status = result.user
+            guard let idToken = status.idToken?.tokenString else {
+                return .signIn
             }
+            /*
+             guard let result = result else {
+             return .failed
+             }*/
             // авторизация в файрбейс
             let credential = GoogleAuthProvider.credential(
                 withIDToken: result.user.idToken!.tokenString,
