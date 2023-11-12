@@ -178,6 +178,8 @@ enum AuthStatus {
     case failed
 }
 struct AuthenticationWithGoogle {
+    @EnvironmentObject private var navigationVM: NavigationRouter
+    
     func googleOauth() async throws {
         // google sign in
         guard let clientID = FirebaseApp.app()?.options.clientID else {
@@ -209,6 +211,8 @@ struct AuthenticationWithGoogle {
             withIDToken: idToken, accessToken: user.accessToken.tokenString
         )
         try await Auth.auth().signIn(with: credential)
+        navigationVM.pushScreen(route: .home)
+        
     }
     
     func logout() async throws {

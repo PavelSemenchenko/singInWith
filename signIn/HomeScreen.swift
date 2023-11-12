@@ -9,14 +9,14 @@ import SwiftUI
 import FirebaseAuth
 
 struct HomeScreen: View {
-    @EnvironmentObject private var navigationVM: NavigationRouter
+    @EnvironmentObject var navigationVM: NavigationRouter
     
     var body: some View {
         VStack{
-            Text(
+            /*Text(
                 "Hello " +
                 (Auth.auth().currentUser?.displayName ?? "Username not found")
-            )
+            )*/
             Text("Hello, This is home page")
                 .font(.largeTitle)
                 .fontWeight(.bold)

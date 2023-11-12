@@ -52,7 +52,7 @@ struct YourApp: App {
     // register app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     // navigation
-    @ObservedObject var navigationVM = NavigationRouter()
+    @StateObject var navigationVM = NavigationRouter()
     
     var body: some Scene {
         WindowGroup {
@@ -69,10 +69,11 @@ struct YourApp: App {
                                     .environmentObject(navigationVM)
                             case .signIn:
                                 ContentView()
+                                    .environmentObject(navigationVM)
                                     .onOpenURL { url in
                                     GIDSignIn.sharedInstance.handle(url)
                                     }
-                                    .environmentObject(navigationVM)
+                                    
                             case .home:
                                 HomeScreen()
                                     .environmentObject(navigationVM)
