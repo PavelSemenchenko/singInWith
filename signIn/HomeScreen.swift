@@ -13,13 +13,15 @@ struct HomeScreen: View {
     
     var body: some View {
         VStack{
-            /*Text(
-                "Hello " +
-                (Auth.auth().currentUser?.displayName ?? "Username not found")
-            )*/
-            Text("Hello, This is home page")
-                .font(.largeTitle)
-                .fontWeight(.bold)
+            if let displayName = Auth.auth().currentUser?.displayName {
+                            Text("Hello, \(displayName),\n This is home page")
+                    .font(.title)
+                                .fontWeight(.bold)
+                        } else {
+                            Text("Hello, User")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                        }
             Button(action: {
                 AuthService.signOut()
                 navigationVM.pushScreen(route: .signIn)
