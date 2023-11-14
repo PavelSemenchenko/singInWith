@@ -59,7 +59,7 @@ struct ContentView: View {
                 
                 // sign in with google
                 AuthButton(action: {
-                    AuthService().signInWithGoogleSync(vc: AuthService.getRootViewController())
+                    AuthService().signInWithGoogleSync(navigation: navigationVM, vc: AuthService.getRootViewController())
                 }, systemImage: "g.circle", label: "Sing in with Google")
                 
                 AuthButton(action: {
@@ -67,6 +67,7 @@ struct ContentView: View {
                 }, systemImage: "apple.logo", label: "SIGN IN WITH APPLE")
                 
                 //другой вариант входа в гугл
+                /*
                 AuthButton(action: {
                     Task {
                         do {
@@ -76,7 +77,7 @@ struct ContentView: View {
                         }
                     }
                 }, systemImage: "person.2.badge.key", label: "google")
-                
+                */
             }.padding()
                 .sheet(isPresented: $isPhoneAuthSheetPresented) {
                     // Всплывающее окно для входа по телефону
@@ -179,8 +180,9 @@ enum AuthStatus {
     case signIn
     case failed
 }
+/*
 struct AuthenticationWithGoogle {
-    @EnvironmentObject private var navigationVM: NavigationRouter
+    //@EnvironmentObject private var navigationVM: NavigationRouter
     
     func googleOauth() async throws {
         // google sign in
@@ -221,13 +223,13 @@ struct AuthenticationWithGoogle {
         GIDSignIn.sharedInstance.signOut()
         try Auth.auth().signOut()
     }
-}
+}*/
 
 
 extension String: Error {}
 
 class AuthService: NSObject {
-    @EnvironmentObject private var navigationVM: NavigationRouter
+    //@EnvironmentObject private var navigationVM: NavigationRouter
     fileprivate var currentNonce: String? // for apple auth
     
     class var isAuthenticated: Bool {
@@ -311,17 +313,17 @@ class AuthService: NSObject {
         
         
     }
-    
-    func signInWithGoogleSync(vc: UIViewController) {
+    // передали навигацию вне вью
+    func signInWithGoogleSync(navigation: NavigationRouter ,vc: UIViewController) {
         Task {
             let status = await AuthService().signInWithGoogle(vc: vc)
             
             switch (status) {
             case .newUser:
-                self.navigationVM.pushScreen(route: .signUp)
+                navigation.pushScreen(route: .signUp)
             case .signIn:
                 print("======== status currently is : \(status.self)")
-                self.navigationVM.pushScreen(route: .home)
+                navigation.pushScreen(route: .home)
             case .failed:
                 // Обработка ошибки
                 print("Google Sign In Failed")

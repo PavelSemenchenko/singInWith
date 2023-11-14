@@ -63,6 +63,7 @@
 		2AB616EC2AF1A4800086143D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2AD087672AF56B6B006E6755 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		2AD087692AF57911006E6755 /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
+		2ADE00232B040A8E0066EA18 /* signIn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = signIn.entitlements; sourceTree = "<group>"; };
 		2ADFF73A2AFD59B9003E1AAD /* SignUpScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpScreen.swift; sourceTree = "<group>"; };
 		2AE89C712AF6E5F10091F642 /* NavigationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRouter.swift; sourceTree = "<group>"; };
 		2AF04C762AF2D2CB006E6E58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -132,6 +133,7 @@
 		2AB616E42AF1A47F0086143D /* signIn */ = {
 			isa = PBXGroup;
 			children = (
+				2ADE00232B040A8E0066EA18 /* signIn.entitlements */,
 				2AF04C762AF2D2CB006E6E58 /* Info.plist */,
 				2AB616E52AF1A47F0086143D /* signInApp.swift */,
 				2AB616E72AF1A47F0086143D /* ContentView.swift */,
@@ -403,10 +405,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = signIn/signIn.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"signIn/Preview Content\"";
-				DEVELOPMENT_TEAM = 7328NRHXBW;
+				DEVELOPMENT_TEAM = 8MJN994E42;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = signIn/Info.plist;
@@ -420,7 +423,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = leksovich.signIn;
+				PRODUCT_BUNDLE_IDENTIFIER = ps.leksovich.signIn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -433,10 +436,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = signIn/signIn.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"signIn/Preview Content\"";
-				DEVELOPMENT_TEAM = 7328NRHXBW;
+				DEVELOPMENT_TEAM = 8MJN994E42;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = signIn/Info.plist;
@@ -450,7 +454,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = leksovich.signIn;
+				PRODUCT_BUNDLE_IDENTIFIER = ps.leksovich.signIn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
