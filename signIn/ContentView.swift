@@ -59,6 +59,7 @@ struct ContentView: View {
                 
                 // sign in with google
                 AuthButton(action: {
+                    // передаем заранее навигацию в функцию вне вью
                     AuthService().signInWithGoogleSync(navigation: navigationVM, vc: AuthService.getRootViewController())
                 }, systemImage: "g.circle", label: "Sing in with Google")
                 
@@ -67,17 +68,19 @@ struct ContentView: View {
                 }, systemImage: "apple.logo", label: "SIGN IN WITH APPLE")
                 
                 //другой вариант входа в гугл
-                /*
+                
                 AuthButton(action: {
                     Task {
                         do {
-                            try await AuthenticationWithGoogle().googleOauth()
+                            var service = AuthenticationWithGoogle()
+                            service.navigationVM = navigationVM
+                            try await service.googleOauth()
                         } catch let e {
                             err = e.localizedDescription
                         }
                     }
                 }, systemImage: "person.2.badge.key", label: "google")
-                */
+                
             }.padding()
                 .sheet(isPresented: $isPhoneAuthSheetPresented) {
                     // Всплывающее окно для входа по телефону
@@ -180,9 +183,9 @@ enum AuthStatus {
     case signIn
     case failed
 }
-/*
+
 struct AuthenticationWithGoogle {
-    //@EnvironmentObject private var navigationVM: NavigationRouter
+    fileprivate(set) var navigationVM: NavigationRouter!
     
     func googleOauth() async throws {
         // google sign in
@@ -223,7 +226,7 @@ struct AuthenticationWithGoogle {
         GIDSignIn.sharedInstance.signOut()
         try Auth.auth().signOut()
     }
-}*/
+}
 
 
 extension String: Error {}

@@ -71,6 +71,7 @@ struct YourApp: App {
                             case .signIn:
                                 ContentView()
                                     .environmentObject(navigationVM)
+                                
                                     .onOpenURL { url in
                                         GIDSignIn.sharedInstance.handle(url)
                                     }
