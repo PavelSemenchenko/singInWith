@@ -44,8 +44,8 @@ struct ContentView: View {
                 .shadow(color: Color.black.opacity(0.8), radius: 5, x: 0, y: 2)
             Spacer()
             Divider()
-                .background(Color.black) // Устанавливаем черный цвет для Divider
-                .frame(height: 2) // Устанавливаем толщину Divider
+                .background(Color.black)
+                .frame(height: 2)
             VStack{
                 AuthButton(action: {
                     navigationVM.pushScreen(route: .signWithEmail)
@@ -65,6 +65,7 @@ struct ContentView: View {
                 
                 AuthButton(action: {
                     AuthService().startSignInWithAppleFlow()
+                    navigationVM.pushScreen(route: .home)
                 }, systemImage: "apple.logo", label: "SIGN IN WITH APPLE")
                 
                 //другой вариант входа в гугл
@@ -174,19 +175,15 @@ struct PhoneAuthView: View {
 }
 
 
-#Preview {
-    ContentView()
-}
-
 enum AuthStatus {
     case newUser
     case signIn
     case failed
 }
-
+// another google
 struct AuthenticationWithGoogle {
     fileprivate(set) var navigationVM: NavigationRouter!
-    
+    @MainActor
     func googleOauth() async throws {
         // google sign in
         guard let clientID = FirebaseApp.app()?.options.clientID else {
@@ -198,8 +195,8 @@ struct AuthenticationWithGoogle {
         GIDSignIn.sharedInstance.configuration = config
         
         //get rootView
-        let scene = await UIApplication.shared.connectedScenes.first as? UIWindowScene
-        guard let rootViewController = await scene?.windows.first?.rootViewController
+        let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        guard let rootViewController = scene?.windows.first?.rootViewController
         else {
             fatalError("There is no root view controller!")
         }
@@ -462,4 +459,7 @@ struct AuthButton: View {
         .shadow(radius: 8.0)
         
     }
+}
+#Preview {
+    ContentView()
 }
