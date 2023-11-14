@@ -56,11 +56,12 @@ struct YourApp: App {
     
     var body: some Scene {
         WindowGroup {
-            if AuthService.isAuthenticated {
-                HomeScreen()
-                    .environmentObject(navigationVM)
-            } else {
-                NavigationStack(path: $navigationVM.currentRoute) {
+           // NavigationStack(path: $navigationVM.currentRoute) {
+                if AuthService.isAuthenticated {
+                    HomeScreen()
+                        .environmentObject(navigationVM)
+                } else {
+                    NavigationStack(path: $navigationVM.currentRoute) {
                     SplashScreen()
                         .navigationDestination(for: NavigationRoute.self) { route in
                             switch route {
@@ -71,9 +72,9 @@ struct YourApp: App {
                                 ContentView()
                                     .environmentObject(navigationVM)
                                     .onOpenURL { url in
-                                    GIDSignIn.sharedInstance.handle(url)
+                                        GIDSignIn.sharedInstance.handle(url)
                                     }
-                                    
+                                
                             case .home:
                                 HomeScreen()
                                     .environmentObject(navigationVM)
@@ -85,8 +86,9 @@ struct YourApp: App {
                                     .environmentObject(navigationVM)
                             }
                         }
-                }.environmentObject(navigationVM)
-            }
+                    }.environmentObject(navigationVM)
+                }
+            //}.environmentObject(navigationVM)
         }
     }
 }

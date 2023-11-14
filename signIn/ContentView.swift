@@ -65,6 +65,8 @@ struct ContentView: View {
                 AuthButton(action: {
                     AuthService().startSignInWithAppleFlow()
                 }, systemImage: "apple.logo", label: "SIGN IN WITH APPLE")
+                
+                //другой вариант входа в гугл
                 AuthButton(action: {
                     Task {
                         do {
@@ -211,8 +213,8 @@ struct AuthenticationWithGoogle {
             withIDToken: idToken, accessToken: user.accessToken.tokenString
         )
         try await Auth.auth().signIn(with: credential)
-        navigationVM.pushScreen(route: .home)
-        
+            navigationVM.pushScreen(route: .home)
+                
     }
     
     func logout() async throws {

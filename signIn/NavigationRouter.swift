@@ -19,7 +19,8 @@ enum NavigationRoute: Hashable {
 
 class NavigationRouter: ObservableObject {
     @Published var currentRoute: NavigationPath = NavigationPath()
-        
+    
+    // добавляем на верх колоды путь
     func pushScreen(route: NavigationRoute) {
         currentRoute.append(route)
     }
@@ -27,9 +28,11 @@ class NavigationRouter: ObservableObject {
         currentRoute.removeLast(currentRoute.count)
         pushScreen(route: .home)
     }
+    //назад - убираем последний слой колоды
     func popScreen() {
         currentRoute.removeLast()
     }
+    //убираем все и переходим на ,,,
     func popUntilSignInScreen() {
         currentRoute.removeLast(currentRoute.count)
         pushScreen(route: .signIn)
