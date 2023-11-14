@@ -14,9 +14,9 @@ import GoogleSignInSwift
 import CryptoKit
 import AuthenticationServices
 
-// need add Push Notification in Capabilities
-//        + Background modes
-//        + Remote notifications
+// need add Push Notification in Capabilities !
+//        + Background modes!
+//        + Remote notifications!
 
 // firebase - cloud messaging !!! add apple key`s *
 // sertifacation- keys- turn Aple push notification + sign in with apple
