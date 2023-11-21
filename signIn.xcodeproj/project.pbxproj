@@ -15,6 +15,8 @@
 		2AB616E82AF1A47F0086143D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB616E72AF1A47F0086143D /* ContentView.swift */; };
 		2AB616EA2AF1A4800086143D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2AB616E92AF1A4800086143D /* Assets.xcassets */; };
 		2AB616ED2AF1A4800086143D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2AB616EC2AF1A4800086143D /* Preview Assets.xcassets */; };
+		2ACF108B2B0D52100015ABA2 /* UserEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACF108A2B0D52100015ABA2 /* UserEntity.swift */; };
+		2ACF108D2B0D52EB0015ABA2 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACF108C2B0D52EB0015ABA2 /* UserRepository.swift */; };
 		2AD087682AF56B6B006E6755 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD087672AF56B6B006E6755 /* HomeScreen.swift */; };
 		2AD0876A2AF57911006E6755 /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD087692AF57911006E6755 /* SplashScreen.swift */; };
 		2ADFF73B2AFD59B9003E1AAD /* SignUpScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADFF73A2AFD59B9003E1AAD /* SignUpScreen.swift */; };
@@ -61,6 +63,8 @@
 		2AB616E72AF1A47F0086143D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		2AB616E92AF1A4800086143D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2AB616EC2AF1A4800086143D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		2ACF108A2B0D52100015ABA2 /* UserEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEntity.swift; sourceTree = "<group>"; };
+		2ACF108C2B0D52EB0015ABA2 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
 		2AD087672AF56B6B006E6755 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		2AD087692AF57911006E6755 /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 		2ADE00232B040A8E0066EA18 /* signIn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = signIn.entitlements; sourceTree = "<group>"; };
@@ -142,6 +146,7 @@
 				2ADFF73A2AFD59B9003E1AAD /* SignUpScreen.swift */,
 				2AD087672AF56B6B006E6755 /* HomeScreen.swift */,
 				2AE89C712AF6E5F10091F642 /* NavigationRouter.swift */,
+				2ACF10892B0D51EF0015ABA2 /* Entities */,
 				2A6611B42AF41BAB00BAF5E5 /* GoogleService-Info.plist */,
 				2AB616E92AF1A4800086143D /* Assets.xcassets */,
 				2AB616EB2AF1A4800086143D /* Preview Content */,
@@ -155,6 +160,15 @@
 				2AB616EC2AF1A4800086143D /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		2ACF10892B0D51EF0015ABA2 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				2ACF108A2B0D52100015ABA2 /* UserEntity.swift */,
+				2ACF108C2B0D52EB0015ABA2 /* UserRepository.swift */,
+			);
+			path = Entities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -270,11 +284,13 @@
 			files = (
 				2AD0876A2AF57911006E6755 /* SplashScreen.swift in Sources */,
 				2AB616E82AF1A47F0086143D /* ContentView.swift in Sources */,
+				2ACF108D2B0D52EB0015ABA2 /* UserRepository.swift in Sources */,
 				2ADFF73B2AFD59B9003E1AAD /* SignUpScreen.swift in Sources */,
 				2A42FE622AF6E8D5001EE869 /* SingInWithEmailScreen.swift in Sources */,
 				2AB616E62AF1A47F0086143D /* signInApp.swift in Sources */,
 				2AE89C722AF6E5F10091F642 /* NavigationRouter.swift in Sources */,
 				2AD087682AF56B6B006E6755 /* HomeScreen.swift in Sources */,
+				2ACF108B2B0D52100015ABA2 /* UserEntity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

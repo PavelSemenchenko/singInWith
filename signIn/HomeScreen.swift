@@ -10,8 +10,16 @@ import FirebaseAuth
 
 struct HomeScreen: View {
     @EnvironmentObject var navigationVM: NavigationRouter
+    @StateObject private var userRepository = UserRepository()
     var body: some View {
         VStack{
+            Text("Привет . \(userRepository.name)")
+                .onAppear {
+                    Task {
+                        await userRepository.getUserInfo()
+                        print("Current User ID: \(userRepository.name)")
+                    }
+                }
             if let displayName = Auth.auth().currentUser?.displayName {
                             Text("Hello, \(displayName),\n This is home page")
                     .font(.title)

@@ -6,13 +6,10 @@
 //
 
 import SwiftUI
+import FirebaseFirestoreSwift
 
-struct UserEntity: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+struct UserEntity: Codable, Identifiable, Hashable  {
+    @DocumentID var id: String?
+    let name: String
 }
 
-#Preview {
-    UserEntity()
-}
