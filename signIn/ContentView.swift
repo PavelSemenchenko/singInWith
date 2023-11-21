@@ -412,6 +412,12 @@ extension AuthService: ASAuthorizationControllerDelegate {
                 print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
                 return
             }
+            
+            // get name from apple
+            let appleFullName = appleIDCredential.fullName
+            let appleEmail = appleIDCredential.email
+            //
+            
             // Initialize a Firebase credential, including the user's full name.
             let credential = OAuthProvider.appleCredential(withIDToken: idTokenString,
                                                            rawNonce: nonce,

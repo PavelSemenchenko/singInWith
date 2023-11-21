@@ -10,7 +10,6 @@ import FirebaseAuth
 
 struct HomeScreen: View {
     @EnvironmentObject var navigationVM: NavigationRouter
-    
     var body: some View {
         VStack{
             if let displayName = Auth.auth().currentUser?.displayName {
@@ -18,7 +17,7 @@ struct HomeScreen: View {
                     .font(.title)
                                 .fontWeight(.bold)
                         } else {
-                            Text("Hello, User")
+                            Text("Hello, User ")
                                 .font(.largeTitle)
                                 .fontWeight(.bold)
                         }
