@@ -26,6 +26,7 @@ struct ContentView: View {
     @State private var isPhoneAuthSheetPresented = false
     //@State private var userLoggedIn = (Auth.auth().currentUser != nil)
     @State private var err : String = ""
+    private let service = AuthService()
     
     var body: some View {
         VStack {
@@ -60,12 +61,12 @@ struct ContentView: View {
                 // sign in with google
                 AuthButton(action: {
                     // передаем заранее навигацию в функцию вне вью
-                    AuthService().signInWithGoogleSync(navigation: navigationVM, vc: AuthService.getRootViewController())
+                    service.signInWithGoogleSync(navigation: navigationVM, vc: AuthService.getRootViewController())
                 }, systemImage: "g.circle", label: "Sing in with Google")
                 
                 AuthButton(action: {
-                    AuthService().startSignInWithAppleFlow()
-                    navigationVM.pushScreen(route: .home)
+                    service.navigationVM = navigationVM
+                    service.startSignInWithAppleFlow()
                 }, systemImage: "apple.logo", label: "SIGN IN WITH APPLE")
                 
                 //другой вариант входа в гугл
@@ -229,7 +230,7 @@ struct AuthenticationWithGoogle {
 extension String: Error {}
 
 class AuthService: NSObject {
-    //@EnvironmentObject private var navigationVM: NavigationRouter
+    fileprivate(set) var navigationVM: NavigationRouter!
     fileprivate var currentNonce: String? // for apple auth
     
     class var isAuthenticated: Bool {
@@ -431,6 +432,7 @@ extension AuthService: ASAuthorizationControllerDelegate {
                     print(error.localizedDescription)
                     return
                 }
+                self.navigationVM.pushHome()
                 // User is signed in to Firebase with Apple.
                 // sign in -> навигация дальше !!!
             }
