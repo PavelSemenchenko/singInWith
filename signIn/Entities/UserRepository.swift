@@ -13,6 +13,7 @@ import FirebaseFirestoreCombineSwift
 
 class UserRepository: ObservableObject {
     @Published var name = "..."
+    @Published var lastName = ""
     
     @MainActor func getUserInfo() async {
         guard let userId = Auth.auth().currentUser?.uid else {
@@ -34,12 +35,10 @@ class UserRepository: ObservableObject {
             
             // Получаем данные первого документа
             if let document = querySnapshot.documents.first {
-                // Преобразуем данные документа в объект Contact
+                // Преобразуем данные документа в объект UserEntity
                 if let contact = try? document.data(as: UserEntity.self) {
                     // Обновляем значение @Published var name
                     self.name = contact.name ?? "John Doe"
-                    print(name)
-                    print(userId)
                     self.objectWillChange.send()
                 } else {
                     print("Failed to decode Contact from document data")
@@ -52,4 +51,28 @@ class UserRepository: ObservableObject {
         }
         
     }
+    
+    @MainActor func signUp(email: String, password: String) async {
+        do {
+            let result = try? await Auth.auth().createUser(withEmail: email, password: password)
+            let uid = (result?.user.uid)!
+            addLastName(uid: uid)
+//            open home
+        } catch {
+            
+        }
+    }
+    
+    private func addLastName(uid: String) {
+            let db = Firestore.firestore()
+            let userRef = db.collection("people").document(uid)
+
+            userRef.setData(["username": lastName]) { error in
+                if let error = error {
+                    print("Error adding username to Firestore: \(error.localizedDescription)")
+                } else {
+                    print("Username added to Firestore successfully.")
+                }
+            }
+        }
 }

@@ -49,6 +49,11 @@ struct ContentView: View {
                 .frame(height: 2)
             VStack{
                 AuthButton(action: {
+                    navigationVM.pushScreen(route: .signUp)
+                    
+                }, systemImage: "+", label: "SIGN UP")
+                
+                AuthButton(action: {
                     navigationVM.pushScreen(route: .signWithEmail)
                 }, systemImage: "at", label: "Sign in with Email")
                 
@@ -94,7 +99,9 @@ struct ContentView: View {
             }.foregroundColor(.black)
         }.navigationBarBackButtonHidden()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(LinearGradient(gradient: Gradient(colors: [.pink, .red]), startPoint: .top, endPoint: .bottom))
+            .background(LinearGradient(gradient: Gradient(
+                colors: [.orange, .orange, .pink, .red]),
+                startPoint: .topTrailing, endPoint: .bottomLeading))
             .opacity(0.9)
     }
 }

@@ -13,13 +13,16 @@ struct HomeScreen: View {
     @StateObject private var userRepository = UserRepository()
     var body: some View {
         VStack{
-            Text("Привет . \(userRepository.name)")
+            Text("Привет, \(userRepository.name)")
+                .font(.largeTitle)
+                .fontWeight(.bold)
                 .onAppear {
                     Task {
                         await userRepository.getUserInfo()
                         print("Current User ID: \(userRepository.name)")
                     }
                 }
+            /*
             if let displayName = Auth.auth().currentUser?.displayName {
                             Text("Hello, \(displayName),\n This is home page")
                     .font(.title)
@@ -29,6 +32,8 @@ struct HomeScreen: View {
                                 .font(.largeTitle)
                                 .fontWeight(.bold)
                         }
+             */
+            Spacer()
             Button(action: {
                 AuthService.signOut()
                 navigationVM.pushScreen(route: .signIn)

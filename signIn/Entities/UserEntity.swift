@@ -11,5 +11,6 @@ import FirebaseFirestoreSwift
 struct UserEntity: Codable, Identifiable, Hashable  {
     @DocumentID var id: String?
     let name: String
+    let lastName: String
 }
 

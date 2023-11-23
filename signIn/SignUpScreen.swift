@@ -9,24 +9,38 @@ import SwiftUI
 
 struct SignUpScreen: View {
     @EnvironmentObject private var navigationVM: NavigationRouter
-    @State private var userFirstName = ""
-    @State private var userLastName = ""
+    @EnvironmentObject private var repository: UserRepository
+    @State private var name = ""
+    @State private var lastName = ""
+    @State private var email = ""
+    @State private var password = ""
     
     var body: some View {
         VStack {
             Text("Hello, new user").font(.title)
             //add upload image
-            TextField("Enter your first name", text: $userFirstName)
+            TextField("Enter Email", text: $email)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .autocapitalization(.words)
                 .padding()
-            TextField("Enter your last name", text: $userLastName)
+            TextField("Enter password", text: $password)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .autocapitalization(.words)
+                .padding()
+            TextField("Enter your first name", text: $name)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .autocapitalization(.words)
+                .padding()
+            TextField("Enter your last name", text: $lastName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .autocapitalization(.words)
                 .padding()
             
             Button("Save Profile") {
-                guard !userFirstName.isEmpty, !userLastName.isEmpty else { return }
+                guard !name.isEmpty, !lastName.isEmpty else { return }
+                Task {
+                   await repository.signUp(email: email, password: password)
+                }
                 /*
                 // Save user profile to Firestore
                 FirestoreService.shared
@@ -39,7 +53,7 @@ struct SignUpScreen: View {
                 // Navigate to the home screen
                 navigationVM.pushScreen(route: .home)
             }
-            .disabled(userFirstName.isEmpty)
+            .disabled(name.isEmpty)
             .padding()
             .cornerRadius(8)
             /*

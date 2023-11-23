@@ -89,6 +89,7 @@ struct SingInWithEmailScreen: View {
 
 struct ResetPasswordScreen: View {
     @State private var email = ""
+    @EnvironmentObject private var loginVM : SingInWithEmailScreenVM
     
     var body: some View {
         VStack {
@@ -99,6 +100,7 @@ struct ResetPasswordScreen: View {
                 .padding()
             
             Button(action: {
+                loginVM.forgotPassword(email: email)
                 // Выполните здесь логику сброса пароля
                 // В этом примере мы просто выведем в консоль email для сброса пароля.
                 print("Запрос на сброс пароля для email: \(email)")
@@ -121,6 +123,10 @@ class SingInWithEmailScreenVM: ObservableObject {
     @Published var password: String = "qwerty"
     @Published var busy: Bool = false
     
+    func forgotPassword(email: String) {
+        Auth.auth().sendPasswordReset(withEmail: email)
+    }
+
     
     var isEmailCorrect: Bool {
         email.contains("@")
@@ -155,16 +161,7 @@ class SingInWithEmailScreenVM: ObservableObject {
         }
         busy = false
     }
-    @MainActor func signUp() async {
-        busy = true
-        do {
-            let result = try? await Auth.auth().createUser(withEmail: email, password: password)
-//            open home
-        } catch {
-            
-        }
-        busy = false
-    }
+    
 }
 
 // BUTTON SETUP

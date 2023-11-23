@@ -85,6 +85,7 @@ struct YourApp: App {
                             case .signUp:
                                 SignUpScreen()
                                     .environmentObject(navigationVM)
+                                    .environmentObject(UserRepository())
                             }
                         }
                     }.environmentObject(navigationVM)
