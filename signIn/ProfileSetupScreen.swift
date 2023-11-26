@@ -25,8 +25,14 @@ struct ProfileSetupScreen: View {
         Button("Save Profile") {
             guard !name.isEmpty, !lastName.isEmpty else { return }
             Task {
-                await repository.addLastName(name: name, lastName: lastName)
-                navigationVM.pushScreen(route: .home)
+                do {
+                    var service = UserRepository()
+                    service.navigationVM = navigationVM
+                    try await service.addLastName(name: name, lastName: lastName)
+                    
+                } catch {
+                    
+                }
             }
             
         }

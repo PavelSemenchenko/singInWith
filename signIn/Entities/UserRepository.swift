@@ -12,7 +12,9 @@ import FirebaseFirestoreSwift
 import FirebaseFirestoreCombineSwift
 
 class UserRepository: ObservableObject {
-    @EnvironmentObject private var navigationVM: NavigationRouter
+    
+    var navigationVM: NavigationRouter!
+    //@EnvironmentObject private var navigationVM: NavigationRouter
     @Published var name = "..."
     @Published var lastName = ",,,"
     
@@ -64,18 +66,24 @@ class UserRepository: ObservableObject {
     }
     
     @MainActor func addLastName(name:String, lastName: String) async {
-        guard let currentUID = Auth.auth().currentUser?.uid else { return }
         
-        let db = Firestore.firestore()
-        let userRef = db.collection("profiles").document(currentUID)
-        
-        try await userRef.setData(["name": name, "lastName": lastName]) { error in
-            if let error = error {
+        if let currentUID = Auth.auth().currentUser?.uid {
+            let db = Firestore.firestore()
+            let userRef = db.collection("profiles").document(currentUID)
+            do {
+                try await userRef.setData(["name": name, "lastName": lastName]) { error in
+                    if let error = error {
+                        print("Error adding username to Firestore: \(error.localizedDescription)")
+                    } else {
+                        print("Username added to Firestore successfully.")
+                    }
+                }
+                navigationVM.pushHome()
+            } catch {
                 print("Error adding username to Firestore: \(error.localizedDescription)")
-            } else {
-                print("Username added to Firestore successfully.")
             }
+        } else {
+            print("Current user ID is nil.")
         }
-        navigationVM.pushHome()
     }
 }
