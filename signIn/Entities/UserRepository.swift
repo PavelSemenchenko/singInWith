@@ -13,7 +13,7 @@ import FirebaseFirestoreCombineSwift
 
 class UserRepository: ObservableObject {
     @Published var name = "..."
-    @Published var lastName = ""
+    @Published var lastName = ",,,"
     
     @MainActor func getUserInfo() async {
         guard let userId = Auth.auth().currentUser?.uid else {
@@ -49,30 +49,31 @@ class UserRepository: ObservableObject {
         } catch {
             print("Error fetching user data: \(error.localizedDescription)")
         }
-        
     }
     
     @MainActor func signUp(email: String, password: String) async {
         do {
             let result = try? await Auth.auth().createUser(withEmail: email, password: password)
             let uid = (result?.user.uid)!
-            addLastName(uid: uid)
-//            open home
+            //addLastName(uid: uid)
+            //            open home
         } catch {
             
         }
     }
     
-    private func addLastName(uid: String) {
-            let db = Firestore.firestore()
-            let userRef = db.collection("people").document(uid)
-
-            userRef.setData(["username": lastName]) { error in
-                if let error = error {
-                    print("Error adding username to Firestore: \(error.localizedDescription)")
-                } else {
-                    print("Username added to Firestore successfully.")
-                }
+    @MainActor func addLastName(name:String, lastName: String) async {
+        guard let currentUID = Auth.auth().currentUser?.uid else { return }
+        
+        let db = Firestore.firestore()
+        let userRef = db.collection("profiles").document(currentUID)
+        
+        try await userRef.setData(["name": name, "lastName": lastName]) { error in
+            if let error = error {
+                print("Error adding username to Firestore: \(error.localizedDescription)")
+            } else {
+                print("Username added to Firestore successfully.")
             }
         }
+    }
 }

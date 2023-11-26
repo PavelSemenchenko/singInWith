@@ -19,6 +19,7 @@
 		2ACF108D2B0D52EB0015ABA2 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACF108C2B0D52EB0015ABA2 /* UserRepository.swift */; };
 		2AD087682AF56B6B006E6755 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD087672AF56B6B006E6755 /* HomeScreen.swift */; };
 		2AD0876A2AF57911006E6755 /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD087692AF57911006E6755 /* SplashScreen.swift */; };
+		2ADA98B62B13716200FFAFC1 /* ProfileSetupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADA98B52B13716200FFAFC1 /* ProfileSetupScreen.swift */; };
 		2ADFF73B2AFD59B9003E1AAD /* SignUpScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADFF73A2AFD59B9003E1AAD /* SignUpScreen.swift */; };
 		2AE89C722AF6E5F10091F642 /* NavigationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AE89C712AF6E5F10091F642 /* NavigationRouter.swift */; };
 		2AF04C352AF2C9F5006E6E58 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2AF04C342AF2C9F5006E6E58 /* FirebaseAnalytics */; };
@@ -67,6 +68,7 @@
 		2ACF108C2B0D52EB0015ABA2 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
 		2AD087672AF56B6B006E6755 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		2AD087692AF57911006E6755 /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
+		2ADA98B52B13716200FFAFC1 /* ProfileSetupScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSetupScreen.swift; sourceTree = "<group>"; };
 		2ADE00232B040A8E0066EA18 /* signIn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = signIn.entitlements; sourceTree = "<group>"; };
 		2ADFF73A2AFD59B9003E1AAD /* SignUpScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpScreen.swift; sourceTree = "<group>"; };
 		2AE89C712AF6E5F10091F642 /* NavigationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRouter.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 				2A42FE612AF6E8D5001EE869 /* SingInWithEmailScreen.swift */,
 				2AD087692AF57911006E6755 /* SplashScreen.swift */,
 				2ADFF73A2AFD59B9003E1AAD /* SignUpScreen.swift */,
+				2ADA98B52B13716200FFAFC1 /* ProfileSetupScreen.swift */,
 				2AD087672AF56B6B006E6755 /* HomeScreen.swift */,
 				2AE89C712AF6E5F10091F642 /* NavigationRouter.swift */,
 				2ACF10892B0D51EF0015ABA2 /* Entities */,
@@ -291,6 +294,7 @@
 				2AE89C722AF6E5F10091F642 /* NavigationRouter.swift in Sources */,
 				2AD087682AF56B6B006E6755 /* HomeScreen.swift in Sources */,
 				2ACF108B2B0D52100015ABA2 /* UserEntity.swift in Sources */,
+				2ADA98B62B13716200FFAFC1 /* ProfileSetupScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
