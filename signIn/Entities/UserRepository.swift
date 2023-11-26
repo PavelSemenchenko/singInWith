@@ -12,6 +12,7 @@ import FirebaseFirestoreSwift
 import FirebaseFirestoreCombineSwift
 
 class UserRepository: ObservableObject {
+    @EnvironmentObject private var navigationVM: NavigationRouter
     @Published var name = "..."
     @Published var lastName = ",,,"
     
@@ -75,5 +76,6 @@ class UserRepository: ObservableObject {
                 print("Username added to Firestore successfully.")
             }
         }
+        navigationVM.pushHome()
     }
 }
