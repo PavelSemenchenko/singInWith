@@ -29,7 +29,7 @@ struct ProfileSetupScreen: View {
                     var service = UserRepository()
                     service.navigationVM = navigationVM
                     try await service.addLastName(name: name, lastName: lastName)
-                    
+                    navigationVM.pushHome()
                 } catch {
                     
                 }
