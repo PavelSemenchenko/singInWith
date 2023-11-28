@@ -78,7 +78,7 @@ class UserRepository: ObservableObject {
                         print("Username added to Firestore successfully.")
                     }
                 }
-               // navigationVM.pushHome()
+               navigationVM.pushHome()
             } catch {
                 print("Error adding username to Firestore: \(error.localizedDescription)")
             }

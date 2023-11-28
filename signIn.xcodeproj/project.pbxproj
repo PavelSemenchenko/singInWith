@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A1E25C42B16794400F0CD86 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1E25C32B16794400F0CD86 /* TabBar.swift */; };
 		2A42FE622AF6E8D5001EE869 /* SingInWithEmailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A42FE612AF6E8D5001EE869 /* SingInWithEmailScreen.swift */; };
 		2A6611B52AF41BAB00BAF5E5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2A6611B42AF41BAB00BAF5E5 /* GoogleService-Info.plist */; };
 		2AA573D02AF54E9500B07C88 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 2AA573CF2AF54E9500B07C88 /* GoogleSignIn */; };
@@ -57,6 +58,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2A1E25C32B16794400F0CD86 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		2A42FE612AF6E8D5001EE869 /* SingInWithEmailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingInWithEmailScreen.swift; sourceTree = "<group>"; };
 		2A6611B42AF41BAB00BAF5E5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2AB616E22AF1A47F0086143D /* signIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = signIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -149,6 +151,7 @@
 				2ADA98B52B13716200FFAFC1 /* ProfileSetupScreen.swift */,
 				2AD087672AF56B6B006E6755 /* HomeScreen.swift */,
 				2AE89C712AF6E5F10091F642 /* NavigationRouter.swift */,
+				2A1E25C32B16794400F0CD86 /* TabBar.swift */,
 				2ACF10892B0D51EF0015ABA2 /* Entities */,
 				2A6611B42AF41BAB00BAF5E5 /* GoogleService-Info.plist */,
 				2AB616E92AF1A4800086143D /* Assets.xcassets */,
@@ -293,6 +296,7 @@
 				2AB616E62AF1A47F0086143D /* signInApp.swift in Sources */,
 				2AE89C722AF6E5F10091F642 /* NavigationRouter.swift in Sources */,
 				2AD087682AF56B6B006E6755 /* HomeScreen.swift in Sources */,
+				2A1E25C42B16794400F0CD86 /* TabBar.swift in Sources */,
 				2ACF108B2B0D52100015ABA2 /* UserEntity.swift in Sources */,
 				2ADA98B62B13716200FFAFC1 /* ProfileSetupScreen.swift in Sources */,
 			);

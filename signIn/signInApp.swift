@@ -58,7 +58,8 @@ struct YourApp: App {
         WindowGroup {
            // NavigationStack(path: $navigationVM.currentRoute) {
                 if AuthService.isAuthenticated {
-                    ProfileSetupScreen()
+                    TabBar()
+                    //ProfileSetupScreen()
                         .environmentObject(UserRepository())
                     //HomeScreen()
                         .environmentObject(navigationVM)
