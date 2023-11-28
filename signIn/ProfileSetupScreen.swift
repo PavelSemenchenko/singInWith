@@ -38,6 +38,10 @@ struct ProfileSetupScreen: View {
         }.padding()
         Button("go home") {
             navigationVM.pushScreen(route: .home)
+        }.padding()
+        Button("logout") {
+            AuthService.signOut()
+            navigationVM.pushScreen(route: .signIn)
         }
     }
 }

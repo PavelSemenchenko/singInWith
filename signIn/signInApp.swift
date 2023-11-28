@@ -80,7 +80,7 @@ struct YourApp: App {
                                 
                             case .home:
                                 HomeScreen()
-                                    .environmentObject(navigationVM)
+                                    .environmentObject(navigationVM) 
                             case .signWithEmail:
                                 SingInWithEmailScreen()
                                     .environmentObject(SingInWithEmailScreenVM())
